@@ -8,6 +8,6 @@ import luzack.app.io.InputManager;
  */
 public class Main {
     public static void main( String[] args ) {
-        InputManager inputManager = new InputManager();
+        InputManager inputManager = new InputManager(0);
     }
 }
