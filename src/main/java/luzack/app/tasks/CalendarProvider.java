@@ -4,15 +4,16 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Calendar;
+import java.util.ArrayList;
 
 public class CalendarProvider extends ProcessManager {
     private LocalDate date;
-    private Map<Integer, String> schedule;
+    private Map<Integer, ArrayList<String>> schedule;
   public CalendarProvider() {
         System.out.println("CalendarProvider");
         date = LocalDate.now();
         schedule = new HashMap<>();
-        schedule.put(10, "9:00am-lab");
+        //schedule.put(10, "9:00am-lab");
     }
     public void work() {
         try {
@@ -21,7 +22,7 @@ public class CalendarProvider extends ProcessManager {
             throw new RuntimeException(e);
         }
     }
-
+    //To do: change loop logic for changed data structure
     public void drawCalendar( int year, int month, Map<Integer, String> map) throws Exception {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month - 1, 1);
