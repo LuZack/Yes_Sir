@@ -7,11 +7,20 @@ def setup():
     if 'macOS' in platform.platform():
         log_writer(0, 'macOS detected')
         if not os.path.isfile('data/profile.json'):
-            profileWriter()    
+            profileWriter()
+        log_writer(0, 'checking z-shell version to register command function...')
+        if not os.path.isfile(os.path.join(os.path.expanduser('~'),'.zshrc')):
+            log_writer(0, 'appending ~/.zprofile')
+            pathSetter('.zprofile')
+        elif os.path.isfile(os.path.join(os.path.expanduser('~'),'.zshrc')):
+            log_writer(0, 'appending ~/.zshrc')   
+            pathSetter('.zshrc')
     else:
         log_writer(2, 'unsupported OS detected')
         log_writer(2, 'exiting')
-    pathSetter('.zprofile')
+        exit()
+
+    
     
 def pathSetter(file_name:str):
     path_name = os.path.join(os.path.expanduser('~'),file_name)
@@ -24,17 +33,16 @@ def pathSetter(file_name:str):
             shell_file.write('}')
     else :
         with open(path_name, 'a') as shell_file:
+            shell_file.write('\n# adding command function for yes_sir\n')
             shell_file.write('\nfunction hey() {\n')
             shell_file.write('java -cp '+dir_path+'/target/yes_sir-1.0-SNAPSHOT.jar luzack.app.Main\n')
             shell_file.write('}\n')
     os.system('chmod +x '+path_name)
-
-    export_path = 'export PATH=$PATH:'+path_name
-    with open(os.path.join(os.path.expanduser('~'),'.zprofile'), 'a') as bash_file:
-        bash_file.write('\n# adding path for yes_sir\n')
-        bash_file.write(export_path)
-    os.system('source '+os.path.join(os.path.expanduser('~'),'.zprofile'))
-    print(os.system('source '+path_name))
+    os.system('source '+path_name)
+    log_writer(0, 'command function is successfully registered') 
+    os.system('source '+path_name)
+    print('if \'hey\' command does not work, please run following command')
+    print('source '+path_name)
     
 
 def profileWriter():
