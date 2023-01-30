@@ -3,6 +3,7 @@ package luzack.app.io;
 import luzack.app.tasks.CalendarProvider;
 import luzack.app.tasks.IntroProvider;
 import luzack.app.tasks.ProcessManager;
+import luzack.app.tasks.TaskAdder;
 
 import java.util.Scanner;
 
@@ -12,9 +13,10 @@ public class InputManager {
     private int taskCode = 0;
     ProcessManager processManager;
     public InputManager(int code) {
-        taskCode = code;
-        new IntroProvider();
+        new IntroProvider(0);
         while(!exitBit) {
+            taskCode = code;
+            new IntroProvider(1);
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
             switch (input) {
@@ -28,15 +30,30 @@ public class InputManager {
                 case "calendar":
                 case "cal":
                     setTaskCode(1);
-                    Thread thread = new Thread(processManager);
-                    thread.start();
+                    Thread thread_1 = new Thread(processManager);
+                    thread_1.start();
                     try {
-                        thread.join();
+                        thread_1.join();
                     } catch (Exception e) {
                         e.printStackTrace();
 
                         System.err.println("I am exiting calendar task due to unexpected error");
-                        thread.interrupt();
+                        thread_1.interrupt();
+                    }
+                    break;
+                case "task":
+                case "add task":
+                case "t":
+                    setTaskCode(2);
+                    Thread thread_2 = new Thread(processManager);
+                    thread_2.start();
+                    try {
+                        thread_2.join();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+
+                        System.err.println("I am exiting calendar task due to unexpected error");
+                        thread_2.interrupt();
                     }
                     break;
                 case "help":
@@ -53,6 +70,9 @@ public class InputManager {
         switch (taskCode) {
             case 1:
                 processManager = new CalendarProvider();
+                break;
+            case 2:
+                processManager = new TaskAdder();
                 break;
             default:
                 System.out.println("Unknown task code");
