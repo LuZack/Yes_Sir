@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+from calendar import monthrange
 
 def setup():
     log_writer(0, 'setup started')
@@ -19,6 +21,32 @@ def setup():
         log_writer(2, 'unsupported OS detected')
         log_writer(2, 'exiting')
         exit()
+    
+    log_writer(0, 'setting up calendar environment')
+    year = datetime.now().year
+    month = datetime.now().month
+    if not os.path.isdir('data'):
+        os.mkdir('data')
+    if not os.path.isdir('data/calendar'):
+        os.mkdir('data/calendar')
+        os.mkdir('data/calendar/'+str(year))
+        for i in range(month,13):
+            with open('data/calendar/'+str(year)+'/'+str(i)+'.json', 'w') as fp:
+                num_days = monthrange(year, i)[1]
+                fp.write('{')
+                for j in range(1,num_days+1):
+                    fp.write('"'+str(j)+'":[]')
+                    if j != num_days:
+                        fp.write(',')
+                fp.write('}')
+        log_writer(0, 'calendar environment is successfully set up')
+    else:
+        print('you already set up the environment before')
+
+        
+    
+    
+    print('setup is successfully completed')
 
     
     
@@ -86,6 +114,8 @@ def profileWriter():
         'address': address,
     }
     
+    if not os.path.isdir('data'):
+        os.mkdir('data')
     with open('data/profile.json', 'w') as profile_file:
         json.dump(profile, profile_file)
     
@@ -94,7 +124,6 @@ def profileWriter():
     
 # 0 for INFO, 1 for WARN, 2 for ERROR
 def log_writer(log_code:int, msg:str):
-    from datetime import datetime
     message = ''
     if log_code == 0:
         message += ':::INFO:::|'
