@@ -51,7 +51,6 @@ public class InputManager {
                         thread_2.join();
                     } catch (Exception e) {
                         e.printStackTrace();
-
                         System.err.println("I am exiting calendar task due to unexpected error");
                         thread_2.interrupt();
                     }

@@ -19,18 +19,19 @@ public class Agenda {
             this.tasks = tasks;
         }
 
-        public class Task {
-            private String name;
-            private String description;
-            private int hour;
-            private int minute;
-            
-            public Task(String name, String description, int hour, int minute) {
-                this.name = name;
-                this.description = description;
-                this.hour = hour;
-                this.minute = minute;
-            }
+        
+    }
+    public class Task {
+        private String name;
+        private String description;
+        private int hour;
+        private int minute;
+        
+        public Task(String name, String description, int hour, int minute) {
+            this.name = name;
+            this.description = description;
+            this.hour = hour;
+            this.minute = minute;
         }
     }
 }
